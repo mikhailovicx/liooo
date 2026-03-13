@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>lioooooooo</title>
+  <title>lioooooo</title>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@300;400;600&family=Pacifico&display=swap" rel="stylesheet">
   <style>
     :root{
@@ -18,7 +18,7 @@
     .paper{width:100%;height:var(--paper-height);margin:0 auto;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02)),radial-gradient(120px 80px at 12% 18%, rgba(120,70,30,0.12), rgba(120,70,30,0.02) 40%),radial-gradient(90px 60px at 78% 72%, rgba(120,70,30,0.10), rgba(120,70,30,0.01) 40%),radial-gradient(60px 40px at 55% 22%, rgba(120,70,30,0.06), rgba(120,70,30,0.00) 40%),linear-gradient(180deg,#f7efe2,#f3eadf);border-radius:8px;box-shadow:0 20px 48px var(--shadow), inset 0 2px 0 rgba(255,255,255,0.6);padding:48px 64px;position:relative;overflow:hidden;border:1px solid rgba(0,0,0,0.06);transform-origin:center;transition:transform .35s ease;font-family:"Libre Baskerville",serif;color:var(--text);display:flex;flex-direction:column;justify-content:flex-start;}
     .paper::before,.paper::after{content:"";position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;background-image:linear-gradient(90deg, rgba(0,0,0,0.02), rgba(255,255,255,0.02) 50%, rgba(0,0,0,0.02));mix-blend-mode:multiply;opacity:0.6;transform:rotate(-1deg) scale(1.02);}
     .paper::after{transform:rotate(1deg) scale(1.01);opacity:0.35;filter:blur(1px);}
-    .content{width:100%;height:100%;overflow:auto;padding-right:8px;line-height:1.7;font-size:18px;-webkit-overflow-scrolling:touch;}
+    .content{width:100%;height:100%;overflow:auto;padding-right:8px;line-height:1.7;font-size:18px;-webkit-overflow-scrolling:touch;position:relative;z-index:5;}
     h1{margin:0 0 8px 0;font-size:30px;color:var(--accent);letter-spacing:0.6px;}
     .meta{font-size:14px;color:#6b6b6b;margin-bottom:18px;}
     p{margin:0 0 16px 0;white-space:pre-wrap;}
@@ -50,22 +50,67 @@
       align-items:center;
       justify-content:center;
       overflow:hidden;
-      z-index:5;
+      z-index:6;
       pointer-events:auto;
       background-repeat:no-repeat;
       background-position:center center;
       background-size:cover;
+      flex-direction:column;
     }
     .polaroid img{
       width:100%;
       height:100%;
-      object-fit:cover; /* penting: isi area dan crop rapi */
+      object-fit:cover;
       display:block;
     }
 
+    /* caption "<3" di bawah foto */
+    .polaroid-caption{
+      width:100%;
+      text-align:center;
+      font-size:18px;
+      color:#b85a6b;
+      margin-top:6px;
+      font-weight:700;
+      letter-spacing:1px;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+      opacity:0;
+      transform:translateY(6px);
+      transition:opacity .45s ease, transform .45s cubic-bezier(.2,.9,.3,1);
+      pointer-events:none;
+      user-select:none;
+    }
+    .polaroid-caption.show{ opacity:1; transform:translateY(0); }
+
+    /* emoji cloud (tidak menghalangi teks) */
+    .emoji-cloud{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      z-index:4; /* di bawah konten (z-index konten = 5) */
+      overflow:visible;
+    }
+    .emoji-cloud .e{
+      position:absolute;
+      font-size:20px;
+      opacity:0.72;
+      transform-origin:center;
+      will-change:transform,opacity;
+      filter:drop-shadow(0 6px 8px rgba(0,0,0,0.06));
+      transition:transform .6s ease, opacity .6s ease;
+      pointer-events:none;
+      user-select:none;
+    }
+    .emoji-cloud .e.small{ font-size:16px; opacity:0.55; animation:floatSmall 6s ease-in-out infinite; }
+    .emoji-cloud .e.mid{ font-size:22px; opacity:0.68; animation:floatMid 7s ease-in-out infinite; }
+    .emoji-cloud .e.large{ font-size:28px; opacity:0.82; animation:floatLarge 8s ease-in-out infinite; }
+    @keyframes floatSmall{0%{transform:translateY(0) rotate(-6deg);}50%{transform:translateY(-8px) rotate(4deg);}100%{transform:translateY(0) rotate(-6deg);}}
+    @keyframes floatMid{0%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-10px) rotate(3deg);}100%{transform:translateY(0) rotate(-3deg);}}
+    @keyframes floatLarge{0%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-12px) rotate(2deg);}100%{transform:translateY(0) rotate(-2deg);}}
+
     /* signature, seal, paw */
-    .signature{font-family:"Pacifico","Libre Baskerville",cursive;font-size:20px;color:#5a2f12;display:inline-block;transform-origin:left center;opacity:0;transition:opacity .6s ease, transform .6s cubic-bezier(.2,.9,.3,1);margin-top:18px;}
-    .wax-seal{position:absolute;right:28px;bottom:28px;width:72px;height:72px;border-radius:50%;background:radial-gradient(circle at 35% 30%, #ff6b3a 0%, #b33b1a 45%, #7a2a12 100%);box-shadow:0 8px 18px rgba(0,0,0,0.28), inset 0 -6px 12px rgba(0,0,0,0.12);display:flex;align-items:center;justify-content:center;color:rgba(255,240,230,0.9);font-weight:700;font-size:18px;transform:rotate(-6deg);border:2px solid rgba(0,0,0,0.06);z-index:6;pointer-events:none;}
+    .signature{font-family:"Pacifico","Libre Baskerville",cursive;font-size:20px;color:#5a2f12;display:inline-block;transform-origin:left center;opacity:0;transition:opacity .6s ease, transform .6s cubic-bezier(.2,.9,.3,1);margin-top:18px;z-index:5;}
+    .wax-seal{position:absolute;right:28px;bottom:28px;width:72px;height:72px;border-radius:50%;background:radial-gradient(circle at 35% 30%, #ff6b3a 0%, #b33b1a 45%, #7a2a12 100%);box-shadow:0 8px 18px rgba(0,0,0,0.28), inset 0 -6px 12px rgba(0,0,0,0.12);display:flex;align-items:center;justify-content:center;color:rgba(255,240,230,0.9);font-weight:700;font-size:18px;transform:rotate(-6deg);border:2px solid rgba(0,0,0,0.06);z-index:7;pointer-events:none;}
     .wax-seal::after{content:"✶";transform:translateY(-2px);filter:drop-shadow(0 1px 0 rgba(255,255,255,0.06));}
     .paw{position:absolute;left:12px;top:28%;font-size:18px;color:rgba(90,50,20,0.18);transform:rotate(-12deg);opacity:0.9;pointer-events:none;}
     .paw.p2{top:36%;left:6%;transform:rotate(-6deg);font-size:16px;opacity:0.7;}
@@ -82,17 +127,23 @@
       .wax-seal{width:56px;height:56px;font-size:16px;right:18px;bottom:18px;}
       .signature{font-size:18px;}
       .polaroid{width:140px;height:120px;left:14px;bottom:90px;transform:rotate(-4deg);}
+      .polaroid-caption{font-size:16px;margin-top:4px;}
+      .emoji-cloud .e{ font-size:16px; opacity:0.6; }
+      .emoji-cloud .e.large{ font-size:22px; }
     }
   </style>
 </head>
 <body>
-  <div class="stage" role="main" aria-label="lioooooooo">
+  <div class="stage" role="main" aria-label="lioooooo">
     <div class="paper" id="paper" aria-live="polite">
       <div class="content" id="content"></div>
 
-      <div class="dog" style="left:8%; top:18%;">🐶🐕🤍</div>
-      <div class="dog small" style="left:78%; top:62%;">🤍🐕🐶</div>
-      <div class="dog large" style="left:50%; top:8%;">🐕🤍🐶</div>
+      <!-- emoji cloud (added) -->
+      <div class="emoji-cloud" id="emojiCloud" aria-hidden="true"></div>
+
+      <div class="dog" style="left:8%; top:18%;">🐶</div>
+      <div class="dog small" style="left:78%; top:62%;">🐶</div>
+      <div class="dog large" style="left:50%; top:8%;">🐶</div>
     </div>
 
     <div class="controls" aria-hidden="false">
@@ -128,7 +179,7 @@ aku juga suka keingat tiap kamu datang main, nanyain aku di mana, cariin aku di 
 `maaf sayang
 
 
-aku sadar hari ini mungkin nggak sesuai sama yang kamu pengen atau bayangan kamu, aku minta maaf. aku nggak pengen nyepelein kamu, tapi jujur aku masih bingung harus bikin apa biar sesuai sama bayangan kamu. aku pengen usaha sebisa aku, aku pengen kamu ngerasa spesial.
+aku sadar hari ini mungkin nggak sesuai sama yang kamu pengen atau bayangin kamu, aku minta maaf. aku nggak pengen nyepelein kamu, tapi jujur aku masih bingung harus bikin apa biar sesuai sama bayangan kamu. aku pengen usaha sebisa aku, aku pengen kamu ngerasa spesial.
 `,
 
 `Penutup
@@ -178,7 +229,7 @@ jadi ya gitu… gimana, kalau mau emang kita mulai lagi? aku bakal terus belajar
       const existing = document.getElementById('polaroid');
       if(idx === pages.length - 1){
         if(!existing){
-          const polHtml = `<div class="polaroid" id="polaroid"><img id="polaroidImg" src="https://drive.google.com/thumbnail?id=1BOMo5GSc-lm1shg0Ze5TLSWAIKm0YmGl&sz=w1000" alt="liooooo" /></div>`;
+          const polHtml = `<div class="polaroid" id="polaroid"><img id="polaroidImg" src="https://drive.google.com/thumbnail?id=1BOMo5GSc-lm1shg0Ze5TLSWAIKm0YmGl&sz=w1000" alt="liooooo" /><div class="polaroid-caption">&lt;3</div></div>`;
           paper.insertAdjacentHTML('beforeend', polHtml);
           const imgEl = document.getElementById('polaroidImg');
 
@@ -188,6 +239,8 @@ jadi ya gitu… gimana, kalau mau emang kita mulai lagi? aku bakal terus belajar
             if(pol) {
               pol.style.backgroundImage = `url('${PHOTO_URL}')`;
               imgEl.remove();
+              const cap = pol.querySelector('.polaroid-caption');
+              if(cap) cap.classList.add('show');
             }
           });
           imgEl.addEventListener('load', ()=> {
@@ -199,7 +252,16 @@ jadi ya gitu… gimana, kalau mau emang kita mulai lagi? aku bakal terus belajar
                 imgEl.style.display = 'none';
               }
             }
+            // tampilkan caption setelah gambar siap
+            setTimeout(()=> {
+              const cap = document.querySelector('#polaroid .polaroid-caption');
+              if(cap) cap.classList.add('show');
+            }, 300);
           });
+        } else {
+          // jika sudah ada polaroid (mis. kembali ke halaman terakhir), pastikan caption terlihat
+          const cap = document.querySelector('#polaroid .polaroid-caption');
+          if(cap) cap.classList.add('show');
         }
       } else {
         if(existing) existing.remove();
@@ -232,6 +294,47 @@ jadi ya gitu… gimana, kalau mau emang kita mulai lagi? aku bakal terus belajar
       }
     })();
 
+    // emoji cloud: positions chosen to stay near edges and not cover text
+    (function addEmojiCloud(){
+      const cloud = document.getElementById('emojiCloud');
+      if(!cloud) return;
+
+      // emoji pool (more of them)
+      const pool = ['🤍','🐕','🐶','🤍','🐶','🐕','🤍','🐶','🤍','🐕','🐶','🤍'];
+
+      // safe positions (percentages) around edges and corners
+      const positions = [
+        {left:'4%', top:'6%', cls:'small'},
+        {left:'16%', top:'8%', cls:'mid'},
+        {left:'28%', top:'12%', cls:'small'},
+        {left:'6%', top:'72%', cls:'mid'},
+        {left:'12%', top:'56%', cls:'small'},
+        {left:'74%', top:'10%', cls:'mid'},
+        {left:'86%', top:'18%', cls:'small'},
+        {left:'68%', top:'66%', cls:'large'},
+        {left:'46%', top:'4%', cls:'small'},
+        {left:'88%', top:'56%', cls:'small'},
+        {left:'36%', top:'78%', cls:'mid'},
+        {left:'54%', top:'82%', cls:'small'}
+      ];
+
+      const count = Math.min(pool.length, positions.length);
+      for(let i=0;i<count;i++){
+        const span = document.createElement('div');
+        span.className = 'e ' + positions[i].cls;
+        span.style.left = positions[i].left;
+        span.style.top = positions[i].top;
+        span.style.zIndex = 4;
+        span.textContent = pool[i];
+        span.style.animationDelay = (Math.random()*1.6) + 's';
+        // slightly reduce opacity for those near content center
+        if(parseInt(positions[i].left) > 30 && parseInt(positions[i].left) < 70 && parseInt(positions[i].top) > 20 && parseInt(positions[i].top) < 70){
+          span.style.opacity = 0.45;
+        }
+        cloud.appendChild(span);
+      }
+    })();
+
     document.querySelectorAll('.dog').forEach((el, i)=>{ const delay = (i * 0.9) + Math.random()*1.2; el.style.animationDelay = delay + 's'; });
 
     render();
@@ -240,7 +343,7 @@ jadi ya gitu… gimana, kalau mau emang kita mulai lagi? aku bakal terus belajar
     window.SuratEliora = {
       setPages(newPages){ if(Array.isArray(newPages) && newPages.length){ pages.length=0; newPages.forEach(p=>pages.push(p)); idx=0; render(); } },
       goTo(n){ if(n>=0 && n<pages.length){ idx=n; render(); } },
-      setPhoto(url){ if(url){ const pol = document.getElementById('polaroid'); if(pol){ const img = pol.querySelector('img'); if(img){ img.src = url; img.style.display='block'; pol.style.backgroundImage=''; } else { pol.style.backgroundImage = `url('${url}')`; } } else { /* jika belum ada polaroid, simpan PHOTO_URL dan render ulang */ window.location.reload(); } } }
+      setPhoto(url){ if(url){ const pol = document.getElementById('polaroid'); if(pol){ const img = pol.querySelector('img'); if(img){ img.src = url; img.style.display='block'; pol.style.backgroundImage=''; const cap = pol.querySelector('.polaroid-caption'); if(cap) cap.classList.add('show'); } else { pol.style.backgroundImage = `url('${url}')`; const cap = pol.querySelector('.polaroid-caption'); if(cap) cap.classList.add('show'); } } else { /* jika belum ada polaroid, reload agar PHOTO_URL dipakai */ window.location.reload(); } } }
     };
   </script>
 </body>
