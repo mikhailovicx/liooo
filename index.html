@@ -481,4 +481,426 @@ if (idx === pages.length - 1) {
     };
   </script>
 </body>
+</html>      transform-origin:center;
+      transition:transform .35s ease;
+      font-family: "Libre Baskerville", serif;
+      color:var(--text);
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+    }
+
+    /* subtle crumple */
+    .paper::before,
+    .paper::after{
+      content:"";
+      position:absolute;
+      left:0; right:0; top:0; bottom:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(90deg, rgba(0,0,0,0.02), rgba(255,255,255,0.02) 50%, rgba(0,0,0,0.02));
+      mix-blend-mode:multiply;
+      opacity:0.6;
+      transform:rotate(-1deg) scale(1.02);
+    }
+    .paper::after{
+      transform:rotate(1deg) scale(1.01);
+      opacity:0.35;
+      filter:blur(1px);
+    }
+
+    .content{
+      width:100%;
+      height:100%;
+      overflow:auto;
+      padding-right:8px;
+      line-height:1.7;
+      font-size:18px;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    h1{
+      margin:0 0 8px 0;
+      font-size:30px;
+      color:var(--accent);
+      letter-spacing:0.6px;
+    }
+    .meta{
+      font-size:14px;
+      color:#6b6b6b;
+      margin-bottom:18px;
+    }
+    p{
+      margin:0 0 16px 0;
+      white-space:pre-wrap;
+    }
+
+    /* Controls */
+    .controls{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      margin-top:12px;
+    }
+    .btn{
+      background:#fff;
+      border:1px solid rgba(0,0,0,0.08);
+      padding:10px 16px;
+      border-radius:8px;
+      cursor:pointer;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+      transition:transform .18s ease, box-shadow .18s ease;
+      font-weight:600;
+    }
+    .btn:active{ transform:translateY(1px) }
+    .btn:disabled{
+      opacity:0.45;
+      cursor:default;
+      transform:none;
+      box-shadow:none;
+    }
+
+    .pager{
+      font-size:13px;
+      color:#5a5a5a;
+      min-width:120px;
+      text-align:center;
+    }
+
+    /* Dog emoji floating */
+    .dog{
+      position:absolute;
+      font-size:28px;
+      will-change:transform;
+      animation:float 6s ease-in-out infinite;
+      opacity:0.95;
+      filter:drop-shadow(0 6px 8px rgba(0,0,0,0.12));
+      pointer-events:none;
+    }
+    .dog.small{ font-size:22px; animation-duration:5.5s; }
+    .dog.large{ font-size:34px; animation-duration:7s; }
+
+    @keyframes float{
+      0%{ transform:translateY(0) translateX(0) rotate(-2deg); }
+      50%{ transform:translateY(-10px) translateX(6px) rotate(2deg); }
+      100%{ transform:translateY(0) translateX(0) rotate(-2deg); }
+    }
+
+    .dots{
+      display:flex;
+      gap:6px;
+      align-items:center;
+    }
+    .dot{
+      width:8px; height:8px; border-radius:50%;
+      background:rgba(0,0,0,0.12);
+    }
+    .dot.active{ background:var(--accent); box-shadow:0 2px 6px rgba(107,63,26,0.18); }
+
+    /* --- tambahan: handwriting signature, wax seal, paw prints, torn edge, typewriter --- */
+    .signature{
+      font-family: "Pacifico", "Libre Baskerville", cursive;
+      font-size:20px;
+      color: #5a2f12;
+      display:inline-block;
+      transform-origin:left center;
+      opacity:0;
+      transition:opacity .6s ease, transform .6s cubic-bezier(.2,.9,.3,1);
+      margin-top:18px;
+    }
+    .wax-seal{
+      position:absolute;
+      right:28px;
+      bottom:28px;
+      width:72px;
+      height:72px;
+      border-radius:50%;
+      background: radial-gradient(circle at 35% 30%, #ff6b3a 0%, #b33b1a 45%, #7a2a12 100%);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.28), inset 0 -6px 12px rgba(0,0,0,0.12);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:rgba(255,240,230,0.9);
+      font-weight:700;
+      font-size:18px;
+      transform:rotate(-6deg);
+      border:2px solid rgba(0,0,0,0.06);
+      z-index:6;
+      pointer-events:none;
+    }
+    .wax-seal::after{
+      content:"✶";
+      transform:translateY(-2px);
+      filter:drop-shadow(0 1px 0 rgba(255,255,255,0.06));
+    }
+    .paw{
+      position:absolute;
+      left:12px;
+      top:28%;
+      font-size:18px;
+      color:rgba(90,50,20,0.18);
+      transform:rotate(-12deg);
+      opacity:0.9;
+      pointer-events:none;
+    }
+    .paw.p2{ top:36%; left:6%; transform:rotate(-6deg); font-size:16px; opacity:0.7; }
+    .paw.p3{ top:46%; left:10%; transform:rotate(-18deg); font-size:14px; opacity:0.55; }
+
+    .paper.torn{
+      box-shadow: 0 26px 58px rgba(0,0,0,0.26), inset 0 2px 0 rgba(255,255,255,0.6);
+      border-radius:6px;
+      background-clip:padding-box;
+    }
+
+    .typewriter p{
+      display:block;
+      overflow:hidden;
+      white-space:pre-wrap;
+      border-right: .12em solid rgba(0,0,0,0.12);
+      animation: typing 1.6s steps(40,end), blink .9s step-end infinite;
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+    .signature.show{ opacity:1; transform:translateY(0) scale(1); }
+
+    /* polaroid placeholder */
+    .polaroid {
+  width: 180px;       /* lebarnya polaroid */
+  height: 160px;      /* tingginya polaroid */
+  background: linear-gradient(180deg,#fff,#f6f6f6);
+  border: 8px solid #fff;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+  position: absolute;
+  left: 28px;         /* posisi di layar */
+  bottom: 110px;
+  transform: rotate(-6deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b3a08a;
+  font-size: 13px;
+  z-index: 5;
+  pointer-events: none;
+    }
+
+    /* responsive */
+    @media (max-width:640px){
+      .paper{ padding:28px 20px; height:72vh; font-size:16px; }
+      .dog{ font-size:20px; }
+      h1{ font-size:22px; }
+      .wax-seal{ width:56px; height:56px; font-size:16px; right:18px; bottom:18px; }
+      .signature{ font-size:18px; }
+      .polaroid{ left:14px; bottom:90px; width:120px; height:100px; transform:rotate(-4deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="stage" role="main" aria-label="Surat untuk Eliora">
+    <div class="paper" id="paper" aria-live="polite">
+      <div class="content" id="content"></div>
+
+      <!-- floating dog emojis (few, spaced) -->
+      <div class="dog" style="left:8%; top:18%;">🐶🐕</div>
+      <div class="dog small" style="left:78%; top:62%;">🐶🐕</div>
+      <div class="dog large" style="left:50%; top:8%;">🐶🐕</div>
+
+      <!-- decorative elements added by JS: wax seal, paw prints, polaroid, signature -->
+    </div>
+
+    <div class="controls" aria-hidden="false">
+      <button class="btn" id="prevBtn" aria-label="Sebelumnya">Prev</button>
+      <div class="pager" id="pager" aria-live="polite">Halaman 1 / 1</div>
+      <button class="btn" id="nextBtn" aria-label="Berikutnya">Next</button>
+    </div>
+
+    <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-top:6px;">
+      <div class="dots" id="dots" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <script>
+    // isi surat yang sudah diperkaya
+    const pages = [
+`Bandung, 14-3-1945
+
+Eliora,
+
+
+kadang kalau aku lagi ngelamun mikirin hal lain, suka aja tiba-tiba keinget kamu. kayak aku suka tiap dengerin kamu cerita random, kamu teriak-teriak, kamu marahin aku. terus ini juga nempel di kepala, kebiasaan ini tiap kamu mau main sama aku waktu itu suka nempelin land mine di bawah banyak-banyak. tiap aku keinget itu, suka senyum-senyum sendiri aja, kayak seneng banget gitu.
+
+`,
+
+`Eliora,
+
+
+aku juga suka keingat tiap kamu datang main, nanyain aku di mana, cariin aku di mana, kalau ketemu ketawa terus diam di sebelah liatin timer. terus ini baru-baru ini nggak tahu kenapa tapi lucu banget tiap main game burik, terus ada musuh, kamu maju polos banget terus mati gatau itu lucu. terus setiap main panik di depan pintu dorong-dorong kamu emot transisi. terus ada waktu kita nonton me before you,waktu kamu cerita film me before you juga.
+`,
+
+`maaf sayang
+
+
+aku sadar hari ini mungkin nggak sesuai sama yang kamu pengen atau bayangin kamu, aku minta maaf. aku nggak pengen nyepelein kamu, tapi jujur aku masih bingung harus bikin apa biar sesuai sama bayangan kamu. aku pengen usaha sebisa aku, aku pengen kamu ngerasa spesial.
+`,
+
+`Penutup
+
+Dengan segala kerendahan hati dan harapan,
+Aku.
+
+jadi ya gitu… gimana, kalau mau emang kita mulai lagi? aku bakal terus belajar, usaha, dan aku bener-bener serius mau berubah. aku pengen kita bisa lebih baik, lebih nyambung, dan aku pengen bikin kamu ngerasa nyaman sama aku lagi..`
+    ];
+
+    const contentEl = document.getElementById('content');
+    const pagerEl = document.getElementById('pager');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const dotsEl = document.getElementById('dots');
+    const paper = document.getElementById('paper');
+
+    let idx = 0;
+
+    function escapeHtml(s){
+      return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('\\n','<br>');
+    }
+
+    function render(){
+      const raw = pages[idx];
+      const lines = raw.split('\\n\\n');
+      let html = '';
+      if(lines[0] && lines[0].length < 40){
+        html += `<h1>${escapeHtml(lines[0])}</h1>`;
+        lines.shift();
+      }
+      html += `<div class="meta">Untuk: <strong>Eliora</strong></div>`;
+      lines.forEach(par => {
+        html += `<p>${escapeHtml(par)}</p>`;
+      });
+
+      // signature placeholder appended per page (moved into content)
+      html += `<div id="sigWrap"><div class="signature" id="signature">— A</div></div>`;
+
+      contentEl.innerHTML = html;
+      pagerEl.textContent = 'Halaman ' + (idx+1) + ' / ' + pages.length;
+      prevBtn.disabled = idx === 0;
+      nextBtn.disabled = idx === pages.length - 1;
+      updateDots();
+
+      // subtle tilt when changing page
+      paper.style.transform = 'rotate(-0.6deg) scale(1.002)';
+      setTimeout(()=> paper.style.transform = 'rotate(0deg) scale(1)', 260);
+
+      // small animation: apply typewriter to first paragraph
+      const paras = contentEl.querySelectorAll('p');
+      paras.forEach(p => p.classList.remove('typewriter'));
+      if(paras.length) paras[0].classList.add('typewriter');
+
+      // show signature with delay
+      const signatureEl = document.getElementById('signature');
+      signatureEl.classList.remove('show');
+      setTimeout(()=> signatureEl.classList.add('show'), 900);
+      
+// tampilkan polaroid di halaman terakhir
+if (idx === pages.length - 1) {
+  if (!document.getElementById('polaroid')) {
+    const polHtml = `
+      <div class="polaroid" id="polaroid">
+  <img id="polaroidImg"
+     src="./images/Eliora.jpg"
+     alt="Kenangan kita" />
+  <div class="caption">Kenangan kita</div>
+</div>`;
+    paper.insertAdjacentHTML('beforeend', polHtml);
+  }
+} else {
+  const existing = document.getElementById('polaroid');
+  if (existing) existing.remove();
+}
+      
+    }
+
+    prevBtn.addEventListener('click', ()=> {
+      if(idx>0){ idx--; render(); }
+    });
+    nextBtn.addEventListener('click', ()=> {
+      if(idx < pages.length-1){ idx++; render(); }
+    });
+
+    window.addEventListener('keydown', (e)=>{
+      if(e.key === 'ArrowRight') nextBtn.click();
+      if(e.key === 'ArrowLeft') prevBtn.click();
+    });
+
+    function updateDots(){
+      dotsEl.innerHTML = '';
+      for(let i=0;i<pages.length;i++){
+        const d = document.createElement('div');
+        d.className = 'dot' + (i===idx ? ' active' : '');
+        d.title = 'Halaman ' + (i+1);
+        d.style.cursor = 'pointer';
+        d.addEventListener('click', ()=> { idx = i; render(); });
+        dotsEl.appendChild(d);
+      }
+    }
+
+    // touch swipe
+    let touchStartX = null;
+    contentEl.addEventListener('touchstart', (e)=> {
+      touchStartX = e.changedTouches[0].clientX;
+    }, {passive:true});
+    contentEl.addEventListener('touchend', (e)=> {
+      if(touchStartX === null) return;
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if(dx < -40) nextBtn.click();
+      if(dx > 40) prevBtn.click();
+      touchStartX = null;
+    });
+
+    // decorative elements: wax seal and paw prints
+    (function addDecor(){
+      if(!document.querySelector('.wax-seal')){
+        const seal = document.createElement('div');
+        seal.className = 'wax-seal';
+        seal.setAttribute('aria-hidden','true');
+        seal.textContent = 'E';
+        paper.appendChild(seal);
+
+        const paw1 = document.createElement('div');
+        paw1.className = 'paw';
+        paw1.textContent = '🐾';
+        paper.appendChild(paw1);
+
+        const paw2 = document.createElement('div');
+        paw2.className = 'paw p2';
+        paw2.textContent = '🐾';
+        paper.appendChild(paw2);
+
+        const paw3 = document.createElement('div');
+        paw3.className = 'paw p3';
+        paw3.textContent = '🐾';
+        paper.appendChild(paw3);
+      }
+    })();
+
+    // randomize dog animation delays so they don't sync
+    document.querySelectorAll('.dog').forEach((el, i)=>{
+      const delay = (i * 0.9) + Math.random()*1.2;
+      el.style.animationDelay = delay + 's';
+    });
+
+    // initial render
+    render();
+
+    // expose simple API for quick edits
+    window.SuratEliora = {
+      setPages(newPages){ if(Array.isArray(newPages) && newPages.length){ pages.length=0; newPages.forEach(p=>pages.push(p)); idx=0; render(); } },
+      goTo(n){ if(n>=0 && n<pages.length){ idx=n; render(); } }
+    };
+  </script>
+</body>
 </html>
