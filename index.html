@@ -25,6 +25,13 @@
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
     }
+    
+    .polaroid img {
+  width: 100%;       /* gambar ngepas sesuai lebar polaroid */
+  height: auto;      /* pertahankan rasio asli gambar */
+  object-fit: cover; /* biar tetep rapi di kotak polaroid */
+  border-radius: 2px; /* optional, biar lebih cakep */
+    }
 
     .stage{
       width:var(--paper-width);
